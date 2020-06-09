@@ -7,4 +7,10 @@ BBFILES ?= ""
 
 BBLAYERS ?= " \
   ##OEROOT##/meta \
+  ##OEROOT##/../meta-openembedded/meta-oe \
+  ##OEROOT##/../meta-openembedded/meta-networking \
+  ##OEROOT##/../meta-openembedded/meta-python \
+  ##OEROOT##/../meta-datarespons \
+  ##OEROOT##/../meta-bsp-common \
+  ##OEROOT##/../meta-connectivity \
   "

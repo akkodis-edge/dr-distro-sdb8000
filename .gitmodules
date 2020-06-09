@@ -6,3 +6,16 @@
 	path = oe-core
 	url = git://git.openembedded.org/openembedded-core
 	branch = dunfell
+[submodule "meta-openembedded"]
+	path = meta-openembedded
+	url = git://git.openembedded.org/meta-openembedded
+	branch = dunfell
+[submodule "meta-connectivity"]
+	path = meta-connectivity
+	url = git@github.com:data-respons-solutions/meta-connectivity.git
+[submodule "meta-datarespons"]
+	path = meta-datarespons
+	url = git@github.com:data-respons-solutions/meta-datarespons.git
+[submodule "meta-bsp-common"]
+	path = meta-bsp-common
+	url = git@github.com:data-respons-solutions/meta-bsp-common.git
