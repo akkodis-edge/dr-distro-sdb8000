@@ -23,3 +23,6 @@
 	path = meta-freescale
 	url = https://github.com/Freescale/meta-freescale.git
 	branch = dunfell
+[submodule "build-tools"]
+	path = build-tools
+	url = git@github.com:data-respons-solutions/build-tools.git
