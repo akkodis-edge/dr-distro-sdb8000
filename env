@@ -1,1 +1,1 @@
-. ./oe-core/oe-init-build-env build/ bitbake/
+TEMPLATECONF="../conf" . ./oe-core/oe-init-build-env build/ bitbake/
