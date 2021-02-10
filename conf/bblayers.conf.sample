@@ -15,4 +15,7 @@ BBLAYERS ?= " \
   ##OEROOT##/../meta-connectivity \
   ##OEROOT##/../meta-freescale \
   ##OEROOT##/../meta-imx-evk \
+  ##OEROOT##/../meta-browser \
+  ##OEROOT##/../meta-python2 \
+  ##OEROOT##/../meta-clang \
   "
