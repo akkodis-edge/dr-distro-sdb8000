@@ -32,3 +32,10 @@ And now you can build:
 ```
 $ DISTRO=your-distro MACHINE=your-machine bitbake your-image
 ```
+
+## Images
+### datarespons-browser-image
+```
+# Launch chromium:
+chromium --no-sandbox --kiosk --no-first-run --incognito --in-process-gpu www.datarespons.com
+```
