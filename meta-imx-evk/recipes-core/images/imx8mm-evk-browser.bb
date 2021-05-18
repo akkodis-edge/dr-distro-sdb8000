@@ -8,3 +8,4 @@ FEATURE_PACKAGES_imx-evk-apps = "\
 "
 
 IMAGE_FEATURES += "imx-evk-apps"
+IMAGE_INSTALL_append += " kernel-image-fitimage"
