@@ -7,12 +7,13 @@ PACKAGE_ARCH = "${MACHINE_ARCH}"
 
 PROVIDES = "${PACKAGES}"
 PACKAGES = "\
+	${@bb.utils.contains('MACHINE_FEATURES', 'screen', 'packagegroup-imx-evk-browser', '',d)} \
 	packagegroup-imx-evk-base \
-	packagegroup-imx-evk-browser \
 "
 
 RDEPENDS_packagegroup-imx-evk-base = "\
 	flash-uboot \
+	blockdev-init \
 "
 
 RDEPENDS_packagegroup-imx-evk-browser = "\
