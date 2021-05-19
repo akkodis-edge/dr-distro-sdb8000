@@ -10,9 +10,6 @@
 	path = meta-openembedded
 	url = git://git.openembedded.org/meta-openembedded
 	branch = hardknott
-[submodule "meta-connectivity"]
-	path = meta-connectivity
-	url = git@github.com:data-respons-solutions/meta-connectivity.git
 [submodule "meta-datarespons"]
 	path = meta-datarespons
 	url = git@github.com:data-respons-solutions/meta-datarespons.git

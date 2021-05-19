@@ -12,7 +12,6 @@ BBLAYERS ?= " \
   ##OEROOT##/../meta-openembedded/meta-python \
   ##OEROOT##/../meta-datarespons \
   ##OEROOT##/../meta-bsp-common \
-  ##OEROOT##/../meta-connectivity \
   ##OEROOT##/../meta-freescale \
   ##OEROOT##/../meta-imx-evk \
   ##OEROOT##/../meta-browser/meta-chromium \
