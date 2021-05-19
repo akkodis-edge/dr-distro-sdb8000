@@ -1,15 +1,15 @@
 [submodule "bitbake"]
 	path = bitbake
 	url = git://git.openembedded.org/bitbake
-	branch = 1.46
+	branch = 1.50
 [submodule "oe-core"]
 	path = oe-core
 	url = git://git.openembedded.org/openembedded-core
-	branch = dunfell
+	branch = hardknott
 [submodule "meta-openembedded"]
 	path = meta-openembedded
 	url = git://git.openembedded.org/meta-openembedded
-	branch = dunfell
+	branch = hardknott
 [submodule "meta-connectivity"]
 	path = meta-connectivity
 	url = git@github.com:data-respons-solutions/meta-connectivity.git
@@ -22,7 +22,7 @@
 [submodule "meta-freescale"]
 	path = meta-freescale
 	url = https://github.com/Freescale/meta-freescale.git
-	branch = dunfell
+	branch = hardknott
 [submodule "build-tools"]
 	path = build-tools
 	url = git@github.com:data-respons-solutions/build-tools.git
@@ -33,8 +33,8 @@
 [submodule "meta-python2"]
 	path = meta-python2
 	url = https://git.openembedded.org/meta-python2
-	branch = dunfell
+	branch = hardknott
 [submodule "meta-clang"]
 	path = meta-clang
 	url = https://github.com/kraj/meta-clang.git
-	branch = dunfell
+	branch = hardknott
