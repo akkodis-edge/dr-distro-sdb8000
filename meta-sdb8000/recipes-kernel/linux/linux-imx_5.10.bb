@@ -10,14 +10,14 @@ SUMMARY = "Linux Kernel provided and supported by NXP"
 DESCRIPTION = "Linux Kernel provided and supported by NXP with focus on \
 i.MX Family Reference Boards. It includes support for many IPs such as GPU, VPU and IPU."
 
-require recipes-kernel/linux/linux-imx.inc
+require linux-imx.inc
 
 LICENSE = "GPLv2"
 LIC_FILES_CHKSUM = "file://COPYING;md5=6bc538ed5bd9a7fc9398086aedcd7e46"
 
 DEPENDS += "lzop-native bc-native"
 
-SRCBRANCH = "lf-5.10.y"
+SRCBRANCH = "sdb8000-lf-5.10.y"
 LOCALVERSION = "-1.0.0"
 SRCREV = "32513c25d8c7867f07b44900368346795357b48e"
 
