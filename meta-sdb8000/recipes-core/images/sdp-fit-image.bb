@@ -3,4 +3,4 @@ LICENSE = "MIT"
 
 inherit fit-package
 
-INITRAMFS_IMAGE = "imx8mm-evk-initramfs"
+INITRAMFS_IMAGE = "sdb8000-initramfs"

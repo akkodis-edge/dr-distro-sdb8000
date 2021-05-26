@@ -13,7 +13,7 @@ BBLAYERS ?= " \
   ##OEROOT##/../meta-datarespons \
   ##OEROOT##/../meta-bsp-common \
   ##OEROOT##/../meta-freescale \
-  ##OEROOT##/../meta-imx-evk \
+  ##OEROOT##/../meta-sdb8000 \
   ##OEROOT##/../meta-browser/meta-chromium \
   ##OEROOT##/../meta-python2 \
   ##OEROOT##/../meta-clang \

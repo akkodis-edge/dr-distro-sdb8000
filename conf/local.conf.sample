@@ -41,7 +41,7 @@ DISTRO ?= "datarespons-distro"
 #MACHINE ?= "qemux86-64"
 #
 # This sets the default machine to be qemux86 if no other machine is selected:
-MACHINE ??= "dr-imx8mmevk"
+MACHINE ??= "sdb8000"
 
 #
 # Where to place downloads
