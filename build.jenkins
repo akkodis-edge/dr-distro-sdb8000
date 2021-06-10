@@ -56,8 +56,10 @@ pipeline {
 	
 		stages {
 		stage('Prepare ssh') {
-			sh('mkdir -p $HOME/.ssh')
-			sh('cp $KNOWN_HOSTS $HOME/.ssh/known_hosts')         
+			steps {
+   				sh('mkdir -p $HOME/.ssh')
+				sh('cp $KNOWN_HOSTS $HOME/.ssh/known_hosts')      
+			}    
 		}
 		stage('Build-sdb8000-image') {
 			environment {
