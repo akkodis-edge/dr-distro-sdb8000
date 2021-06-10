@@ -1,0 +1,120 @@
+pipeline {
+	agent { label 'linux && large' }
+	
+	parameters {
+		string name: 'SFTP_URL', defaultValue: 'ftp.datarespons.com', description: 'sftp server url'
+		string name: 'SFTP_PATH', defaultValue: 'nexcom/sdb8000/image', description: 'sftp path'
+		string name: 'SFTP_USER', defaultValue: 'dr-solutions-jenkins', description: 'sftp user'
+		booleanParam name: 'BUILD_SDK', defaultValue: true, description: ''
+	}
+	
+	environment {
+		BUILD_USER = "${sh (returnStdout: true, script: 'id -un').trim()}"
+		BUILD_UID = "${sh (returnStdout: true, script: 'id -u').trim()}"
+		BUILD_GID = "${sh (returnStdout: true, script: 'id -g').trim()}"
+		BUILD_HOME = "${sh (returnStdout: true, script: 'getent passwd $(id -un) | cut -d: -f6').trim()}"
+		DL_DIR = "${BUILD_HOME}/oe/downloads"
+		SSTATE_DIR = "${BUILD_HOME}/oe/sstate-cache"
+	}
+	
+	stages {
+	stage('Init') {
+		steps {
+			// Jenkins git module allows recursively updating submodules.
+			// It works fine for a clean build but consequent builds where a single submodule is updated
+			// will fail due to credentials.
+			// Workaround is to update submodules from this step instead.
+			sshagent (credentials: ['github-data-respons-solutions']) {
+				sh """ 
+					git submodule update --init
+				"""
+			}
+		}
+	}
+	
+	stage('Container') {
+		agent {
+			dockerfile {
+				filename 'oe-build.docker'
+				dir 'build-tools'
+				args "-v ${SSTATE_DIR}:${SSTATE_DIR} -v ${DL_DIR}:${DL_DIR}"
+				additionalBuildArgs "--build-arg USERNAME=${BUILD_USER} --build-arg UID=${BUILD_UID} --build-arg GID=${BUILD_GID}"
+				reuseNode true
+			}
+		}
+		
+		environment {
+			KNOWN_HOSTS = credentials('KNOWN_HOSTS')
+			GTAG = "${sh (returnStdout: true, script: 'git describe --always --tags --long --dirty').trim()}"
+			DR_CM_COMMIT = "${GTAG}"
+			DR_BUILD_NO = "${BUILD_NUMBER}"
+			DR_BUILD_PLAN = "${JOB_NAME}"
+			DISTRO = "datarespons-distro"
+			MACHINE = "sdb8000"
+			BB_ENV_EXTRAWHITE = "DR_BUILD_PLAN DR_BUILD_NO DR_CM_COMMIT MACHINE DISTRO DL_DIR SSTATE_DIR"
+		}
+	
+		stages {
+		stage('Prepare ssh') {
+			sh('mkdir -p $HOME/.ssh')
+			sh('cp $KNOWN_HOSTS $HOME/.ssh/known_hosts')         
+		}
+		stage('Build-sdb8000-image') {
+			environment {
+				IMAGE_NAME = "sdb8000-image"
+				IMAGE_ARTIFACTS = "build/tmp-glibc/deploy/images/${MACHINE}/${IMAGE_NAME}-${MACHINE}-*rootfs*"
+				IMAGE_SDK_ARTIFACTS = "build/tmp-glibc/deploy/sdk/oecore-*"
+			}
+			
+			stages {
+			stage('Prepare') {
+				steps {
+					sh """
+						rm -rf build
+						source ./env
+					"""
+				}
+			}
+			stage('Image') {
+				steps {
+					sshagent (credentials: ['github-data-respons-solutions', 'sftp-data-respons-solutions']) {
+						sh """
+							source ./env
+							bitbake ${IMAGE_NAME}
+						"""
+					}
+				}
+			}
+			stage('SDK') {
+				when {
+				    expression { params.BUILD_SDK }
+				}
+				steps {
+					sshagent (credentials: ['github-data-respons-solutions', 'sftp-data-respons-solutions']) {
+						sh """
+							source ./env
+							bitbake ${IMAGE_NAME} -c populate_sdk
+						"""
+					}
+				}
+			}
+			stage('Deploy') {
+				steps {
+					sshagent (credentials: ['sftp-data-respons-solutions']) {
+						sh """
+							sftp -oBatchMode=yes ${SFTP_USER}@${SFTP_URL} << EOF
+							mkdir /${SFTP_PATH}/${GTAG}
+							put ${IMAGE_ARTIFACTS} /${SFTP_PATH}/${GTAG}/
+							put ${IMAGE_SDK_ARTIFACTS} /${SFTP_PATH}/${GTAG}/
+							quit
+							EOF
+						"""
+					}
+				}
+			}
+			}
+		}
+		}
+	}
+	}
+}
