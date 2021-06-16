@@ -17,4 +17,5 @@ BBLAYERS ?= " \
   ##OEROOT##/../meta-browser/meta-chromium \
   ##OEROOT##/../meta-python2 \
   ##OEROOT##/../meta-clang \
+  ##OEROOT##/../meta-test \
   "
