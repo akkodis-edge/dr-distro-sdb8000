@@ -8,6 +8,7 @@ PACKAGE_ARCH = "${MACHINE_ARCH}"
 PROVIDES = "${PACKAGES}"
 PACKAGES = "\
 	packagegroup-sdb8000-base \
+	packagegroup-sdb8000-test \
 "
 
 RDEPENDS_packagegroup-sdb8000-base = "\
@@ -15,4 +16,10 @@ RDEPENDS_packagegroup-sdb8000-base = "\
 	blockdev-init \
 	swap-root \
 	nvram \
+"
+
+RDEPENDS_packagegroup-sdb8000-test = "\
+	strace \
+	i2c-tools \
+	loopback-test \
 "
