@@ -6,6 +6,7 @@ FEATURE_PACKAGES_imx-sdb8000 = "\
 	packagegroup-sdb8000-browser \
 	packagegroup-sdb8000-base \
 	packagegroup-sdb8000-test \
+	packagegroup-sdb8000-factory \
 "
 
 IMAGE_FEATURES += "sdb8000-apps"
