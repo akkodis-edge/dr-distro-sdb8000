@@ -18,7 +18,7 @@ LIC_FILES_CHKSUM = "file://COPYING;md5=6bc538ed5bd9a7fc9398086aedcd7e46"
 DEPENDS += "lzop-native bc-native"
 
 SRCBRANCH = "sdb8000-lf-5.10.y"
-LOCALVERSION = "-1.2.0"
+LINUX_VERSION_EXTENSION = "-1.2.0"
 SRCREV = "fae82277053c1c20d9aa29ab3dd7abe063f640d3"
 
 # PV is defined in the base in linux-imx.inc file and uses the LINUX_VERSION definition
