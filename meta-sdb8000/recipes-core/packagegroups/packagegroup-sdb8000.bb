@@ -22,6 +22,7 @@ RDEPENDS_packagegroup-sdb8000-factory = "\
 	firmware-i210 \
 	flash-i210 \
 	disk-install \
+	flash-fuse-imx8mm \
 "
 
 RDEPENDS_packagegroup-sdb8000-test = "\
