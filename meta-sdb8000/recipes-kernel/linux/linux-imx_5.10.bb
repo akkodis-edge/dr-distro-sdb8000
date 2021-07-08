@@ -19,7 +19,7 @@ DEPENDS += "lzop-native bc-native"
 
 SRCBRANCH = "sdb8000-lf-5.10.y"
 LINUX_VERSION_EXTENSION = "-1.4.0"
-SRCREV = "511d0d9ea2a06284d4f0a9f422fbb7ef4644160d"
+SRCREV = "c093fe57eb88f58cb8d30bc68460c755a0426e80"
 
 # PV is defined in the base in linux-imx.inc file and uses the LINUX_VERSION definition
 # required by kernel-yocto.bbclass.
