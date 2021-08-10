@@ -29,4 +29,5 @@ RDEPENDS_packagegroup-sdb8000-test = "\
 	strace \
 	i2c-tools \
 	loopback-test \
+	phytool \
 "
