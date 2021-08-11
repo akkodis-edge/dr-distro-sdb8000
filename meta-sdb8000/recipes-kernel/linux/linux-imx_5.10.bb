@@ -18,8 +18,8 @@ LIC_FILES_CHKSUM = "file://COPYING;md5=6bc538ed5bd9a7fc9398086aedcd7e46"
 DEPENDS += "lzop-native bc-native"
 
 SRCBRANCH = "sdb8000-lf-5.10.y"
-LINUX_VERSION_EXTENSION = "-1.5.0"
-SRCREV = "3e41e3fd9f2362f62333bcbb70c1f97a5c85a3ae"
+LINUX_VERSION_EXTENSION = "-1.5.1"
+SRCREV = "794cabd3ed5fc483305dd3e3a3b1bf1ecaf5d133"
 
 # PV is defined in the base in linux-imx.inc file and uses the LINUX_VERSION definition
 # required by kernel-yocto.bbclass.
