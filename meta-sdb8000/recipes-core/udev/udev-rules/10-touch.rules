@@ -1,1 +1,2 @@
 ACTION=="add|change", KERNEL=="event[0-9]*", ATTRS{name}=="ILI210x Touchscreen", IMPORT{program}="/usr/bin/nvram-calibration-export"
+ACTION=="add|change", KERNEL=="event[0-9]*", ATTRS{name}=="Goodix Capacitive TouchScreen", IMPORT{program}="/usr/bin/nvram-calibration-export"
