@@ -30,4 +30,5 @@ RDEPENDS_packagegroup-sdb8000-test = "\
 	i2c-tools \
 	loopback-test \
 	phytool \
+	optee-test \
 "
