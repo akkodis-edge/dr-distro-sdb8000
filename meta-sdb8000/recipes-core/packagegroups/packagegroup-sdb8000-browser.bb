@@ -12,4 +12,5 @@ PACKAGES = "\
 
 RDEPENDS_packagegroup-sdb8000-browser = "\
 	chromium-ozone-wayland \
+	cog \
 "

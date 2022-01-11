@@ -38,3 +38,7 @@
 [submodule "meta-test"]
 	path = meta-test
 	url = git@github.com:data-respons-solutions/meta-test.git
+[submodule "meta-webkit"]
+	path = meta-webkit
+	url = https://github.com/Igalia/meta-webkit
+	branch = hardknott

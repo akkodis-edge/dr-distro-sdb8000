@@ -18,4 +18,5 @@ BBLAYERS ?= " \
   ##OEROOT##/../meta-python2 \
   ##OEROOT##/../meta-clang \
   ##OEROOT##/../meta-test \
+  ##OEROOT##/../meta-webkit \
   "
