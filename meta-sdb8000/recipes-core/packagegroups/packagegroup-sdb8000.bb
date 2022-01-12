@@ -16,6 +16,7 @@ RDEPENDS_packagegroup-sdb8000-base = "\
 	flash-uboot \
 	swap-root \
 	nvram \
+	libgpiod-tools \
 "
 
 RDEPENDS_packagegroup-sdb8000-factory = "\
