@@ -14,9 +14,6 @@ BBLAYERS ?= " \
   ##OEROOT##/../meta-bsp-common \
   ##OEROOT##/../meta-freescale \
   ##OEROOT##/../meta-sdb8000 \
-  ##OEROOT##/../meta-browser/meta-chromium \
-  ##OEROOT##/../meta-python2 \
-  ##OEROOT##/../meta-clang \
   ##OEROOT##/../meta-test \
   ##OEROOT##/../meta-webkit \
   "

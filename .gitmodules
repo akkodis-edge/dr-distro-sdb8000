@@ -23,18 +23,6 @@
 [submodule "build-tools"]
 	path = build-tools
 	url = git@github.com:data-respons-solutions/build-tools.git
-[submodule "meta-browser"]
-	path = meta-browser
-	url = https://github.com/OSSystems/meta-browser.git
-	branch = master
-[submodule "meta-python2"]
-	path = meta-python2
-	url = https://git.openembedded.org/meta-python2
-	branch = hardknott
-[submodule "meta-clang"]
-	path = meta-clang
-	url = https://github.com/kraj/meta-clang.git
-	branch = hardknott
 [submodule "meta-test"]
 	path = meta-test
 	url = git@github.com:data-respons-solutions/meta-test.git
