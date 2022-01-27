@@ -6,7 +6,7 @@ pipeline {
 		string name: 'SFTP_PATH', defaultValue: 'jenkins/sdb8000/image', description: 'sftp path'
 		string name: 'SFTP_USER', defaultValue: 'dr-solutions-jenkins', description: 'sftp user'
 		booleanParam name: 'BUILD_SDK', defaultValue: true, description: ''
-		string name: 'IMAGE_NAME', defaultValue: 'sdb8000-image', description: 'Name of image to build'
+		string name: 'BUILD_IMAGE', defaultValue: 'sdb8000-image', description: 'Name of image to build'
 	}
 	
 	environment {
@@ -64,6 +64,7 @@ pipeline {
 		}
 		stage('Build-sdb8000-image') {
 			environment {
+				IMAGE_NAME = "${BUILD_IMAGE}"
 				IMAGE_ARTIFACTS = "build/tmp-glibc/deploy/images/${MACHINE}/${IMAGE_NAME}-${MACHINE}-*rootfs*"
 				IMAGE_SDK_ARTIFACTS = "build/tmp-glibc/deploy/sdk/oecore-*"
 			}
