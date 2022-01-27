@@ -17,6 +17,7 @@ RDEPENDS_packagegroup-sdb8000-base = "\
 	swap-root \
 	nvram \
 	libgpiod-tools \
+	backlightctl \
 "
 
 RDEPENDS_packagegroup-sdb8000-factory = "\
