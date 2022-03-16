@@ -33,4 +33,5 @@ RDEPENDS_packagegroup-sdb8000-test = "\
 	loopback-test \
 	phytool \
 	optee-test \
+	stress-ng \
 "
