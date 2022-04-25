@@ -7,6 +7,7 @@ inherit systemd
 SRC_URI += " \
 	file://cog-launch.service \
 	file://cog-default \
+	file://80-cog \
 "
 
 RDEPENDS_${PN} += "cog"
@@ -16,6 +17,8 @@ do_install () {
     install -m 0644 ${WORKDIR}/cog-launch.service ${D}${systemd_system_unitdir}/cog-launch.service
     install -d ${D}/${sysconfdir}/default
     install -m 0644 ${WORKDIR}/cog-default ${D}/${sysconfdir}/default/cog
+    install -d ${D}/${sysconfdir}/NetworkManager/dispatcher.d
+    install -m 0755 ${WORKDIR}/80-cog ${D}/${sysconfdir}/NetworkManager/dispatcher.d/80-cog
 }
 
 SYSTEMD_SERVICE_${PN} += "cog-launch.service"
