@@ -12,4 +12,5 @@ PACKAGES = "\
 
 RDEPENDS_packagegroup-sdb8000-browser = "\
 	cog \
+	cog-launch \
 "

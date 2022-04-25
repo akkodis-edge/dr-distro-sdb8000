@@ -1,0 +1,15 @@
+[Unit]
+Description=Start cog
+Requires=weston-init.service network-online.target
+After=weston-init.service network-online.target
+
+[Service]
+User=root
+PAMName=login
+Environment=WAYLAND_DISPLAY=/run/wayland-0
+Environment=COG_PLATFORM_FDO_VIEW_FULLSCREEN=1
+EnvironmentFile=/etc/default/cog
+ExecStart=cog $COG_OPTIONS $COG_URL
+
+[Install]
+WantedBy=multi-user.target
