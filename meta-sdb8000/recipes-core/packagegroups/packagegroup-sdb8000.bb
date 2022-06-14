@@ -12,7 +12,7 @@ PACKAGES = "\
 	packagegroup-sdb8000-factory \
 "
 
-RDEPENDS_packagegroup-sdb8000-base = "\
+RDEPENDS:packagegroup-sdb8000-base = "\
 	flash-uboot \
 	swap-root \
 	nvram \
@@ -20,17 +20,17 @@ RDEPENDS_packagegroup-sdb8000-base = "\
 	backlightctl \
 "
 
-RDEPENDS_packagegroup-sdb8000-factory = "\
+RDEPENDS:packagegroup-sdb8000-factory = "\
 	firmware-i210 \
 	flash-i210 \
 	disk-install \
 	flash-fuse-imx8mm \
 "
 
-RDEPENDS_packagegroup-sdb8000-test = "\
+RDEPENDS:packagegroup-sdb8000-test = "\
 	strace \
 	i2c-tools \
-	loopback-test \
+	packagegroup-datarespons-test \
 	phytool \
 	optee-test \
 	stress-ng \
