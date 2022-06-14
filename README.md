@@ -13,13 +13,13 @@ git submodule update --init
 Prepare docker build container running as current user
 
 ```
-build-tools/make-oe-build.sh
+build-tools/make-oe-kirkstone-build.sh
 ```
 
 Enter container and optionally use project shared downloads and sstate directories.  The -k flag will virtual mount current users  ~/.ssh dir inside the container.
 
 ```
-build-tools/run-oe-build.sh \
+build-tools/run-oe-kirkstone-build.sh \
         -c ./ \
         -w ./ \
         -s /home/user/oe/sstate-cache \
