@@ -36,7 +36,7 @@ pipeline {
 	stage('Container') {
 		agent {
 			dockerfile {
-				filename 'oe-build.docker'
+				filename 'oe-kirkstone-build.docker'
 				dir 'build-tools'
 				args "-v ${SSTATE_DIR}:${SSTATE_DIR} -v ${DL_DIR}:${DL_DIR}"
 				additionalBuildArgs "--build-arg USERNAME=${BUILD_USER} --build-arg UID=${BUILD_UID} --build-arg GID=${BUILD_GID}"
@@ -52,7 +52,7 @@ pipeline {
 			DR_BUILD_PLAN = "${JOB_NAME}"
 			DISTRO = "datarespons-distro"
 			MACHINE = "sdb8000"
-			BB_ENV_EXTRAWHITE = "DR_BUILD_PLAN DR_BUILD_NO DR_CM_COMMIT MACHINE DISTRO DL_DIR SSTATE_DIR"
+			BB_ENV_PASSTHROUGH_ADDITIONS = "DR_BUILD_PLAN DR_BUILD_NO DR_CM_COMMIT MACHINE DISTRO DL_DIR SSTATE_DIR"
 		}
 	
 		stages {
