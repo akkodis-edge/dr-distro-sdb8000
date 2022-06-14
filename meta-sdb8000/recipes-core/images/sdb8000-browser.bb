@@ -10,4 +10,4 @@ FEATURE_PACKAGES_sdb8000-apps = "\
 "
 
 IMAGE_FEATURES += "sdb8000-apps"
-IMAGE_INSTALL_append += " kernel-image-fitimage"
+IMAGE_INSTALL:append = " kernel-image-fitimage"

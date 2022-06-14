@@ -6,7 +6,7 @@ SRC_URI += " \
 	file://disk-install.sh \
 "
 
-RDEPENDS_${PN} += "blockdev-init nvram"
+RDEPENDS:${PN} += "blockdev-init nvram"
 
 do_install () {
     install -d ${D}${sbindir}

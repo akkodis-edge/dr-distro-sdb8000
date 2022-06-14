@@ -11,6 +11,6 @@ do_install () {
     install -m 0644 ${WORKDIR}/i210-sdb8000-invm.hex ${D}${nonarch_base_libdir}/firmware/intel/
 }
 
-FILES_${PN} += "${nonarch_base_libdir}/firmware/intel/*"
+FILES:${PN} += "${nonarch_base_libdir}/firmware/intel/*"
 
 COMPATIBLE_MACHINE = "sdb8000"

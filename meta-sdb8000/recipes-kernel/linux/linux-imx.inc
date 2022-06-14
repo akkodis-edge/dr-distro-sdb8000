@@ -14,7 +14,7 @@ SRCBRANCH ?= ""
 # Set the PV to the correct kernel version to satisfy the kernel version sanity check
 PV = "${LINUX_VERSION}+git${SRCPV}"
 
-SRC_URI = "git://github.com/data-respons-solutions/dr-kernel-mirror.git;branch=${SRCBRANCH} \
+SRC_URI = "git://github.com/data-respons-solutions/dr-kernel-mirror.git;protocol=https;branch=${SRCBRANCH} \
 	file://defconfig \
 "
 

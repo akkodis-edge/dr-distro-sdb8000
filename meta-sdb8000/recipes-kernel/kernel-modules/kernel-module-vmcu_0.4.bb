@@ -14,4 +14,4 @@ S = "${WORKDIR}/git"
 COMPATIBLE_MACHINE = "sdb8000"
 KERNEL_MODULE_AUTOLOAD += "vmcu"
 
-RPROVIDES_${PN} += "kernel-module-vmcu"
+RPROVIDES:${PN} += "kernel-module-vmcu"

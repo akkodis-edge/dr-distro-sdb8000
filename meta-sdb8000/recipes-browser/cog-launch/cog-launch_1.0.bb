@@ -10,7 +10,7 @@ SRC_URI += " \
 	file://80-cog \
 "
 
-RDEPENDS_${PN} += "cog"
+RDEPENDS:${PN} += "cog"
 
 do_install () {
     install -d ${D}${systemd_system_unitdir}
@@ -21,4 +21,4 @@ do_install () {
     install -m 0755 ${WORKDIR}/80-cog ${D}/${sysconfdir}/NetworkManager/dispatcher.d/80-cog
 }
 
-SYSTEMD_SERVICE_${PN} += "cog-launch.service"
+SYSTEMD_SERVICE:${PN} += "cog-launch.service"

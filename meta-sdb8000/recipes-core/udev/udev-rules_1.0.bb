@@ -4,7 +4,7 @@ LIC_FILES_CHKSUM = "file://${COMMON_LICENSE_DIR}/MIT;md5=0835ade698e0bcf8506ecda
 
 SRC_URI = " file://10-touch.rules"
 
-RDEPENDS_${PN} += "nvram-touch-calibration"
+RDEPENDS:${PN} += "nvram-touch-calibration"
 
 do_install () {
 	install -d ${D}${sysconfdir}/udev/rules.d
