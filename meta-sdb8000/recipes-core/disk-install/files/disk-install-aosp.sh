@@ -15,23 +15,23 @@ DEVICE="/dev/mmcblk2"
 read -r -d '' config <<- EOM
 images:
    - name: table
-     type: raw
+     type: raw.bz2
      target: device
      reload_partitions: true
    - name: boot
-     type: raw
+     type: raw.bz2
      target: label:boot_a
    - name: dtbo
-     type: raw
+     type: raw.bz2
      target: label:dtbo_a
    - name: vbmeta
-     type: raw
+     type: raw.bz2
      target: label:vbmeta_a
    - name: vendor_boot
-     type: raw
+     type: raw.bz2
      target: label:vendor_boot_a
    - name: super
-     type: android-sparse
+     type: android-sparse.bz2
      target: label:super
 EOM
 
