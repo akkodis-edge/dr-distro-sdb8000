@@ -10,7 +10,7 @@ PACKAGES = "\
 	packagegroup-sdb8000-browser \
 "
 
-RDEPENDS_packagegroup-sdb8000-browser = "\
+RDEPENDS:packagegroup-sdb8000-browser = "\
 	cog \
 	cog-launch \
 "
