@@ -10,6 +10,7 @@ if [ "$#" -lt "1" ]; then
 fi
 IMAGE="$1"
 DEVICE="/dev/mmcblk2"
+LOG="/tmp/disk-install-linux.yaml"
 
 read -r -d '' config <<- EOM
 partitions:
@@ -29,7 +30,7 @@ images:
 EOM
 
 printf '%s\n' "$config"
-if printf '%s\n' "$config" | image-install --force-unmount --wipefs --device "$DEVICE" --config - image="${IMAGE}"; then
+if printf '%s\n' "$config" | image-install --force-unmount --wipefs --device "$DEVICE" --log "$LOG" --config - image="${IMAGE}"; then
 	## set nvram variables
 	NVRAM_SYSTEM_UNLOCK=16440 nvram --sys set SYS_BOOT_PART rootfs1 || die "Failed setting nvram variable SYS_BOOT_PART"
 	NVRAM_SYSTEM_UNLOCK=16440 nvram --sys set SYS_BOOT_SWAP rootfs1 || die "Failed setting nvram variable SYS_BOOT_SWAP"

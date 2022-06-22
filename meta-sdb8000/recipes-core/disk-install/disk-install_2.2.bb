@@ -7,7 +7,7 @@ SRC_URI += " \
 	file://disk-install-aosp.sh \
 "
 
-RDEPENDS:${PN} += "image-tools nvram bash"
+RDEPENDS:${PN} = "image-tools nvram bash"
 
 do_install () {
     install -d ${D}${sbindir}

@@ -11,6 +11,7 @@ fi
 
 DIR="$1"
 DEVICE="/dev/mmcblk2"
+LOG="/tmp/disk-install-aosp.yaml"
 
 read -r -d '' config <<- EOM
 images:
@@ -31,18 +32,18 @@ images:
      type: raw.bz2
      target: label:vendor_boot_a
    - name: super
-     type: android-sparse.bz2
+     type: android-sparse
      target: label:super
 EOM
 
 printf '%s\n' "$config"
-if printf '%s\n' "$config" | image-install --force-unmount --wipefs --device "$DEVICE" --config - \
-	table="${DIR}/partition-table.img" \
+if printf '%s\n' "$config" | image-install --force-unmount --wipefs --device "$DEVICE" --log "$LOG" --config - \
+	table="${DIR}/partition-table.img.bz2" \
 	super="${DIR}/super.img" \
-	boot="${DIR}/boot.img" \
-	dtbo="${DIR}/dtbo-imx8mm.img" \
-	vbmeta="${DIR}/vbmeta-imx8mm.img" \
-	vendor_boot="${DIR}/vendor_boot.img"; then
+	boot="${DIR}/boot.img.bz2" \
+	dtbo="${DIR}/dtbo-imx8mm.img.bz2" \
+	vbmeta="${DIR}/vbmeta-imx8mm.img.bz2" \
+	vendor_boot="${DIR}/vendor_boot.img.bz2"; then
 		echo "Success!"
 		exit 0
 fi
