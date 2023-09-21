@@ -6,19 +6,21 @@ LIC_FILES_CHKSUM = "file://COPYING;md5=d7810fab7487fb0aad327b76f1be7cd7"
 
 inherit kernel-yocto kernel fsl-vivante-kernel-driver-handler
 
-# Put a local version until we have a true SRCREV to point to
-LOCALVERSION ?= ""
-SCMVERSION ?= "y"
-SRCBRANCH ?= ""
-
 # Set the PV to the correct kernel version to satisfy the kernel version sanity check
-PV = "${LINUX_VERSION}+git${SRCPV}"
+PV = "${LINUX_VERSION}${LOCALVERSION}"
+S = "${WORKDIR}/git"
+
+do_kernel_localversion() {
+	# Add GIT revision to the local version
+	head=`git --git-dir=${S}/.git rev-parse --verify --short HEAD 2> /dev/null`
+	printf "%s-%s%s" ${LOCALVERSION} +g $head > ${S}/.scmversion
+}
+
+addtask kernel_localversion before do_configure after do_patch do_kernel_metadata
 
 SRC_URI = "git://github.com/data-respons-solutions/dr-kernel-mirror.git;protocol=https;branch=${SRCBRANCH} \
 	file://defconfig \
 "
-
-S = "${WORKDIR}/git"
 
 # Tell to kernel class that we would like to use our defconfig to configure the kernel.
 # Otherwise, the --allnoconfig would be used per default which leads to mis-configured
