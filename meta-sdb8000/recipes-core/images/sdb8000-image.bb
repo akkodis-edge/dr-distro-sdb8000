@@ -1,6 +1,6 @@
 DESCRIPTION = "Reference image"
 
-require recipes-bsp/images/datarespons-image.bb
+require recipes-core/images/datarespons-image.bb
 
 FEATURE_PACKAGES_sdb8000-apps = "\
 	packagegroup-sdb8000-base \

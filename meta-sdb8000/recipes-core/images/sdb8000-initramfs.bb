@@ -1,6 +1,6 @@
 DESCRIPTION = "Reference initramfs"
 
-require recipes-bsp/images/datarespons-image.bb
+require recipes-core/images/datarespons-image.bb
 
 IMAGE_FSTYPES = "${INITRAMFS_FSTYPES}"
 
