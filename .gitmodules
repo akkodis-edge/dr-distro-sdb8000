@@ -1,15 +1,15 @@
 [submodule "bitbake"]
 	path = bitbake
 	url = git://git.openembedded.org/bitbake
-	branch = 2.0
+	branch = 2.4
 [submodule "oe-core"]
 	path = oe-core
 	url = git://git.openembedded.org/openembedded-core
-	branch = kirkstone
+	branch = mickledore
 [submodule "meta-openembedded"]
 	path = meta-openembedded
 	url = git://git.openembedded.org/meta-openembedded
-	branch = kirkstone
+	branch = mickledore
 [submodule "meta-datarespons"]
 	path = meta-datarespons
 	url = git@github.com:data-respons-solutions/meta-datarespons.git
@@ -19,7 +19,7 @@
 [submodule "meta-freescale"]
 	path = meta-freescale
 	url = https://github.com/Freescale/meta-freescale.git
-	branch = kirkstone
+	branch = mickledore
 [submodule "build-tools"]
 	path = build-tools
 	url = git@github.com:data-respons-solutions/build-tools.git
@@ -29,4 +29,4 @@
 [submodule "meta-webkit"]
 	path = meta-webkit
 	url = https://github.com/Igalia/meta-webkit
-	branch = master
+	branch = main
