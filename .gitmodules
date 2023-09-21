@@ -30,3 +30,7 @@
 	path = meta-webkit
 	url = https://github.com/Igalia/meta-webkit
 	branch = main
+[submodule "meta-arm"]
+	path = meta-arm
+	url = git://git.yoctoproject.org/meta-arm
+	branch = mickledore

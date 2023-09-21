@@ -16,4 +16,6 @@ BBLAYERS ?= " \
   ##OEROOT##/../meta-sdb8000 \
   ##OEROOT##/../meta-test \
   ##OEROOT##/../meta-webkit \
+  ##OEROOT##/../meta-arm/meta-arm \
+  ##OEROOT##/../meta-arm/meta-arm-toolchain \
   "
