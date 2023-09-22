@@ -1,0 +1,22 @@
+From e5c6ddf3b6b75c3287a50f4a920b6e3f4d42b907 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Mikko=20Salom=C3=A4ki?= <ms@datarespons.se>
+Date: Fri, 22 Sep 2023 12:46:02 +0200
+Subject: [PATCH] probe(): No longer has i2c_device_id* argument
+
+---
+ vmcu.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/vmcu.c b/vmcu.c
+index 1652ed9..9760e6c 100644
+--- a/vmcu.c
++++ b/vmcu.c
+@@ -404,7 +404,7 @@ static int gpio_register(struct vmcu *vmcu)
+ 	return r;
+ }
+ 
+-static int probe(struct i2c_client* client, const struct i2c_device_id* id)
++static int probe(struct i2c_client* client)
+ {
+ 	struct vmcu *vmcu = NULL;
+ 	u32 val = 0;

@@ -7,7 +7,9 @@ inherit module
 
 BRANCH ?= "main"
 SRCREV ?= "5900ed07826b7b139f0644c2367ef13592df4261"
-SRC_URI = "git://git@github.com/data-respons-solutions/kernel-module-vmcu.git;protocol=ssh;branch=${BRANCH}"
+SRC_URI = "git://git@github.com/data-respons-solutions/kernel-module-vmcu.git;protocol=ssh;branch=${BRANCH} \
+           file://0001-probe-No-longer-has-i2c_device_id-argument.patch \
+           "
 
 S = "${WORKDIR}/git"
 
