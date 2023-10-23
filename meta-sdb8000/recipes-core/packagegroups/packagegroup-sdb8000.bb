@@ -16,6 +16,7 @@ RDEPENDS:packagegroup-sdb8000-base = "\
 	flash-uboot \
 	swap-root \
 	backlightctl \
+	mount-data \
 "
 
 RDEPENDS:packagegroup-sdb8000-service = "\
