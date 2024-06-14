@@ -18,7 +18,7 @@ LIC_FILES_CHKSUM = "file://COPYING;md5=6bc538ed5bd9a7fc9398086aedcd7e46"
 DEPENDS += "lzop-native bc-native"
 
 SRCBRANCH = "sdb8000-lf-5.10.y"
-LINUX_VERSION_EXTENSION = "-2.0.1"
+LINUX_VERSION_EXTENSION = "-2.0.2"
 SRCREV = "7f54f203a00b0f6286011cbd02c057811a84de8b"
 
 # PV is defined in the base in linux-imx.inc file and uses the LINUX_VERSION definition
@@ -31,3 +31,8 @@ LINUX_VERSION = "5.10.9"
 DEFAULT_PREFERENCE = "1"
 
 COMPATIBLE_MACHINE = "(mx6|mx7|mx8)"
+
+SRC_URI += "git://github.com/data-respons-solutions/dr-kernel-mirror.git;protocol=https;branch=${SRCBRANCH} \
+           file://defconfig \
+           file://0001-sdb8000-enable-fec.patch \
+           "

@@ -1,0 +1,22 @@
+From c9b4290065bbe4ef4ac8dd0ab986cba9cf514da9 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Mikko=20Salom=C3=A4ki?= <ms@datarespons.se>
+Date: Fri, 14 Jun 2024 08:30:54 +0200
+Subject: [PATCH] sdb8000: enable fec
+
+---
+ arch/arm64/boot/dts/freescale/sdb8000.dts | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/arch/arm64/boot/dts/freescale/sdb8000.dts b/arch/arm64/boot/dts/freescale/sdb8000.dts
+index a4c03a08eb9b..330da249aee6 100755
+--- a/arch/arm64/boot/dts/freescale/sdb8000.dts
++++ b/arch/arm64/boot/dts/freescale/sdb8000.dts
+@@ -239,7 +239,7 @@ &fec1 {
+ 	phy-mode = "rgmii-id";
+ 	phy-handle = <&ethphy0>;
+ 	fsl,magic-packet;
+-	status = "disabled";
++	status = "okay";
+ 
+ 	mdio {
+ 		#address-cells = <1>;
