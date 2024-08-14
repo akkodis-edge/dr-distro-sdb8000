@@ -65,7 +65,7 @@ pipeline {
 		stage('Build-sdb8000-image') {
 			environment {
 				IMAGE_NAME = "${BUILD_IMAGE}"
-				IMAGE_ARTIFACTS = "build/tmp-glibc/deploy/images/${MACHINE}/${IMAGE_NAME}-${MACHINE}-*rootfs*"
+				IMAGE_ARTIFACTS = "build/tmp-glibc/deploy/images/${MACHINE}/${IMAGE_NAME}-${MACHINE}.rootfs-*"
 				IMAGE_SDK_ARTIFACTS = "build/tmp-glibc/deploy/sdk/oecore-*"
 			}
 			
