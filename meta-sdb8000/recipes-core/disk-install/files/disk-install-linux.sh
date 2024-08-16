@@ -14,15 +14,16 @@ LOG="/tmp/disk-install-linux.yaml"
 
 read -r -d '' config <<- EOM
 partitions:
+   - type: table_gpt
    - label: rootfs1
-     fs: ext4
+     type: ext4
      size: 3000
    - label: rootfs2
-     fs: ext4
+     type: ext4
      size: 3000
    - label: data
-     fs: ext4
-     size: 9000
+     type: ext4
+     size: 8000
 images:
    - name: image
      type: tar.bz2
