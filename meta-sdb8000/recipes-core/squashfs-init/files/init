@@ -1,0 +1,50 @@
+#!/bin/sh
+
+die() {
+	echo "booterror: $1"
+	reboot -n -f
+}
+
+export PATH=/sbin:/bin:/usr/sbin:/usr/bin
+
+srclabel="TESTDRIVE"
+srcmount="/rootfs.dev"
+srcrootimg="${srcmount}/boot/rootfs.squashfs"
+newroot="/rootfs"
+
+# Core setup
+mkdir -p /sys /proc /dev || die "Failed creating core directories"
+mount -t sysfs none /sys || die "Failed mounting /sys"
+mount -t proc none /proc || die "Failed mounting /proc"
+mount -t devtmpfs none /dev || die "Failed mounting /dev/"
+modprobe squashfs || die "Failed loading driver squashfs"
+modprobe overlay || die "Failed loading driver overlay"
+
+# Find and mount device
+mkdir -p "$srcmount" || die "Failed creating mount directories"
+echo "Searching for root device with label \"$srclabel\""
+while true; do
+	srcdev=$(blkid --match-token "PARTLABEL=$srclabel" -o device)
+	[ "x$srcdev" != "x" ] && break
+	sleep 0.1
+done
+echo "Found: $srcdev"
+mount -o ro "$srcdev" "$srcmount" || die "Failed mounting $srcdev"
+
+# Overlay setup for root
+mkdir -p "$newroot" /rootfs.ro /rootfs.rw || die "Failed creating overlay directories"
+mount -t tmpfs tmpfs /rootfs.rw || die "Failed mounting /rootfs.rw"
+mkdir /rootfs.rw/work /rootfs.rw/upper || die "Failed creating /rootfs.rw directories"
+mount -t squashfs -o ro "$srcrootimg" /rootfs.ro || die "Failed mounting squashfs"
+mount -t overlay overlay -o lowerdir=/rootfs.ro,upperdir=/rootfs.rw/upper,workdir=/rootfs.rw/work "$newroot" \
+	|| die "Failed mounting root overlay"
+
+# Change root
+mkdir -p "${newroot}/rootfs.ro" "${newroot}/rootfs.rw" "${newroot}/rootfs.dev" || die "Failed creating root directories"
+mount --move /rootfs.ro "${newroot}/rootfs.ro" || die "Failed moving rootfs.ro"
+mount --move /rootfs.rw "${newroot}/rootfs.rw" || die "Failed moving rootfs.rw"
+mount --move "$srcmount" "${newroot}/rootfs.dev" || die "Failed moving rootfs.dev"
+cd "$newroot" || die "Failed moving to new rootfs"
+exec switch_root . /sbin/init "$@" || die "Failed switch_root"
+
+die "Should not be here"
