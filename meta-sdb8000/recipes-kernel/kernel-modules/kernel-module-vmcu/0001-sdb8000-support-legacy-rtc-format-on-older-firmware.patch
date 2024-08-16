@@ -1,0 +1,121 @@
+From ea27ffac752ea09472988a307ac0e05403852175 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Mikko=20Salom=C3=A4ki?= <ms@datarespons.se>
+Date: Thu, 15 Aug 2024 11:16:51 +0200
+Subject: [PATCH] sdb8000: support legacy rtc format on older firmware
+
+---
+ vmcu.c | 87 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 86 insertions(+), 1 deletion(-)
+
+diff --git a/vmcu.c b/vmcu.c
+index 3435931..f7c21a9 100644
+--- a/vmcu.c
++++ b/vmcu.c
+@@ -297,6 +297,82 @@ static int rtc_read(struct device *dev, struct rtc_time *rtctime)
+ static struct rtc_class_ops vmcu_rtc_ops = {
+ 	.read_time = rtc_read, .set_time = rtc_set, };
+ 
++static int rtc_legacy_set(struct device *dev, struct rtc_time *rtctime)
++{
++	struct vmcu *vmcu = dev_get_drvdata(dev);
++	int r = 0;
++
++	const uint32_t date = bin2bcd(rtctime->tm_year - 100) << RTC_DATE_YEAR_SHIFT
++			| bin2bcd(rtctime->tm_mon + 1) << RTC_DATE_MON_SHIFT
++			| bin2bcd(rtctime->tm_mday) << RTC_DATE_DAY_SHIFT
++			| bin2bcd(rtctime->tm_wday + 1) << RTC_DATE_WDAY_SHIFT;
++
++	const uint32_t time = bin2bcd(rtctime->tm_hour) << RTC_TIME_HOUR_SHIFT
++			| bin2bcd(rtctime->tm_min) << RTC_TIME_MIN_SHIFT
++			| bin2bcd(rtctime->tm_sec) << RTC_TIME_SEC_SHIFT;
++
++	r = mutex_lock_interruptible(&vmcu->mtx);
++	if (r)
++		return r;
++
++	r = regmap_write(vmcu->regmap, RTC_DATE_REG, date);
++	if (r == 0)
++		r = regmap_write(vmcu->regmap, RTC_TIME_REG, time);
++
++	mutex_unlock(&vmcu->mtx);
++
++	if (r < 0)
++		return r;
++
++	dev_dbg(dev, "RTC time write: %d:%d:%d - %d/%d/%d, wd=%d\n",
++		rtctime->tm_hour, rtctime->tm_min, rtctime->tm_sec,
++		rtctime->tm_year, rtctime->tm_mon, rtctime->tm_mday,
++		rtctime->tm_wday);
++
++	return 0;
++}
++
++static int rtc_legacy_read(struct device *dev, struct rtc_time *rtctime)
++{
++	struct vmcu *vmcu = dev_get_drvdata(dev);
++	uint32_t time = 0;
++	uint32_t date = 0;
++	int r = 0;
++
++	r = mutex_lock_interruptible(&vmcu->mtx);
++	if (r)
++		return r;
++
++	r = regmap_read(vmcu->regmap, RTC_TIME_REG, &time);
++	if (r == 0)
++		r = regmap_read(vmcu->regmap, RTC_DATE_REG, &date);
++
++	mutex_unlock(&vmcu->mtx);
++
++	if (r < 0)
++		return r;
++
++	rtctime->tm_sec = bcd2bin(time >> RTC_TIME_SEC_SHIFT & 0xff);
++	rtctime->tm_min = bcd2bin(time >> RTC_TIME_MIN_SHIFT & 0xff);
++	rtctime->tm_hour = bcd2bin(time >> RTC_TIME_HOUR_SHIFT & 0xff);
++	rtctime->tm_mday = bcd2bin(date >> RTC_DATE_DAY_SHIFT);
++	rtctime->tm_mon = bcd2bin(date >> RTC_DATE_MON_SHIFT) - 1;
++	rtctime->tm_year = bcd2bin(date >> RTC_DATE_YEAR_SHIFT) + 100;
++	rtctime->tm_wday = bcd2bin(date >> RTC_DATE_WDAY_SHIFT) - 1;
++	rtctime->tm_yday = 0;
++	rtctime->tm_isdst = 0;
++
++	dev_dbg(dev, "RTC time read: %d:%d:%d - %d/%d/%d, wd=%d\n",
++		rtctime->tm_hour, rtctime->tm_min, rtctime->tm_sec,
++		rtctime->tm_year, rtctime->tm_mon, rtctime->tm_mday,
++		rtctime->tm_wday);
++
++	return 0;
++}
++
++static struct rtc_class_ops vmcu_rtc_legacy_ops = {
++	.read_time = rtc_legacy_read, .set_time = rtc_legacy_set, };
++
+ static int led0_blink(struct led_classdev *cdev, unsigned long *delay_on, unsigned long *delay_off)
+ {
+ 	struct vmcu* vmcu = dev_get_drvdata(cdev->dev->parent);
+@@ -529,6 +605,8 @@ static int adc_register(struct vmcu *vmcu)
+ 	indio_dev->channels = vmcu_iio_channels;
+ 	indio_dev->num_channels = ARRAY_SIZE(vmcu_iio_channels);
+ 
++	/*  */
++
+ 	r = devm_iio_device_register(&vmcu->client->dev, indio_dev);
+ 	if (r < 0) {
+ 		dev_err(&vmcu->client->dev, "Failed registering adc\n");
+@@ -1535,7 +1613,14 @@ static int vmcu_probe(struct i2c_client* client)
+ 			vmcu->version.major, vmcu->version.minor, vmcu->version.patch);
+ 
+ 	// rtc
+-	vmcu->rtc = devm_rtc_device_register(&client->dev, "vmcu", &vmcu_rtc_ops, THIS_MODULE);
++	/* legacy format used before firmware >= 1.1.0 */
++	if (vmcu->version.major >= 1 && vmcu->version.minor >= 1) {
++		vmcu->rtc = devm_rtc_device_register(&client->dev, "vmcu", &vmcu_rtc_ops, THIS_MODULE);
++	}
++	else {
++		dev_info(&client->dev, "Using legacy rtc format");
++		vmcu->rtc = devm_rtc_device_register(&client->dev, "vmcu", &vmcu_rtc_legacy_ops, THIS_MODULE);
++	}
+ 	if (IS_ERR(vmcu->rtc))
+ 		return PTR_ERR(vmcu->rtc);
+ 
