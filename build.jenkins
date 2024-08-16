@@ -5,8 +5,6 @@ pipeline {
 		string name: 'SFTP_URL', defaultValue: 'ftp.datarespons.com', description: 'sftp server url'
 		string name: 'SFTP_PATH', defaultValue: 'jenkins/sdb8000/image', description: 'sftp path'
 		string name: 'SFTP_USER', defaultValue: 'dr-solutions-jenkins', description: 'sftp user'
-		booleanParam name: 'BUILD_SDK', defaultValue: true, description: ''
-		string name: 'BUILD_IMAGE', defaultValue: 'sdb8000-image', description: 'Name of image to build'
 	}
 	
 	environment {
@@ -64,7 +62,7 @@ pipeline {
 		}
 		stage('Build-sdb8000-image') {
 			environment {
-				IMAGE_NAME = "${BUILD_IMAGE}"
+				IMAGE_NAME = "sdb8000-image"
 				IMAGE_ARTIFACTS = "build/tmp-glibc/deploy/images/${MACHINE}/${IMAGE_NAME}-${MACHINE}.rootfs-*"
 				IMAGE_SDK_ARTIFACTS = "build/tmp-glibc/deploy/sdk/oecore-*"
 			}
@@ -89,9 +87,6 @@ pipeline {
 				}
 			}
 			stage('SDK') {
-				when {
-				    expression { params.BUILD_SDK }
-				}
 				steps {
 					sshagent (credentials: ['github-data-respons-solutions', 'sftp-data-respons-solutions']) {
 						sh """
@@ -109,6 +104,98 @@ pipeline {
 							mkdir /${SFTP_PATH}/${GTAG}
 							put ${IMAGE_ARTIFACTS} /${SFTP_PATH}/${GTAG}/
 							put ${IMAGE_SDK_ARTIFACTS} /${SFTP_PATH}/${GTAG}/
+							quit
+							EOF
+						"""
+					}
+				}
+			}
+			}
+		}
+		stage('Build-service-image') {
+			environment {
+				IMAGE_NAME = "service-image"
+				IMAGE_ARTIFACTS = "build/tmp-glibc/deploy/images/${MACHINE}/${IMAGE_NAME}-${MACHINE}.rootfs-*"
+				IMAGE_SDK_ARTIFACTS = "build/tmp-glibc/deploy/sdk/oecore-*"
+			}
+			
+			stages {
+			stage('Prepare') {
+				steps {
+					sh """
+						rm -rf build
+						source ./env
+					"""
+				}
+			}
+			stage('Image') {
+				steps {
+					sshagent (credentials: ['github-data-respons-solutions', 'sftp-data-respons-solutions']) {
+						sh """
+							source ./env
+							bitbake ${IMAGE_NAME}
+						"""
+					}
+				}
+			}
+			stage('SDK') {
+				steps {
+					sshagent (credentials: ['github-data-respons-solutions', 'sftp-data-respons-solutions']) {
+						sh """
+							source ./env
+							bitbake ${IMAGE_NAME} -c populate_sdk
+						"""
+					}
+				}
+			}
+			stage('Deploy') {
+				steps {
+					sshagent (credentials: ['sftp-data-respons-solutions']) {
+						sh """
+							sftp -oBatchMode=yes ${SFTP_USER}@${SFTP_URL} << EOF
+							mkdir /${SFTP_PATH}/${GTAG}
+							put ${IMAGE_ARTIFACTS} /${SFTP_PATH}/${GTAG}/
+							put ${IMAGE_SDK_ARTIFACTS} /${SFTP_PATH}/${GTAG}/
+							quit
+							EOF
+						"""
+					}
+				}
+			}
+			}
+		}
+		stage('Build-service-usb') {
+			environment {
+				IMAGE_NAME = "service-usb"
+				IMAGE_ARTIFACTS = "build/tmp-glibc/deploy/images/${MACHINE}/${IMAGE_NAME}-${MACHINE}.rootfs-*"
+			}
+			
+			stages {
+			stage('Prepare') {
+				steps {
+					sh """
+						rm -rf build
+						source ./env
+					"""
+				}
+			}
+			stage('Image') {
+				steps {
+					sshagent (credentials: ['github-data-respons-solutions', 'sftp-data-respons-solutions']) {
+						sh """
+							source ./env
+							bitbake ${IMAGE_NAME}
+						"""
+					}
+				}
+			}
+			stage('Deploy') {
+				steps {
+					sshagent (credentials: ['sftp-data-respons-solutions']) {
+						sh """
+							sftp -oBatchMode=yes ${SFTP_USER}@${SFTP_URL} << EOF
+							mkdir /${SFTP_PATH}/${GTAG}
+							put ${IMAGE_ARTIFACTS} /${SFTP_PATH}/${GTAG}/
 							quit
 							EOF
 						"""
