@@ -1,0 +1,40 @@
+name: Build sdb8000
+
+on:
+  workflow_dispatch:
+    inputs:
+      build_type:
+        type: choice
+        description: 'Build type, staging or release'
+        options:
+          - 'staging'
+          - 'release'
+        default: 'staging'
+        required: true
+      build_sdb8000:
+        type: choice
+        description: 'Build sdb8000 image'
+        options:
+          - 'true'
+          - 'false'
+        default: 'true'
+        required: true
+
+jobs:
+  docker:
+    if: ${{inputs.build_sdb8000 == 'true' }}
+    uses: ./.github/workflows/init_docker.yml
+    secrets: inherit
+
+  sdb8000:
+    if: ${{inputs.build_sdb8000 == 'true'}}
+    needs: [ docker ]
+    uses: ./.github/workflows/sdb8000.yml
+    secrets: inherit
+    with:
+      build_type: ${{inputs.build_type}}
+      p11_kit: ${{needs.docker.outputs.p11_kit}}
+      p11_kit_addr: ${{needs.docker.outputs.p11_kit_addr}}
+      docker_img: ${{needs.docker.outputs.docker_img}}
+      dl_dir: ${{needs.docker.outputs.dl_dir}}
+      sstate_dir: ${{needs.docker.outputs.sstate_dir}}

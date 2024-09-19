@@ -1,0 +1,89 @@
+#Reusable workflow for build and initialize docker image
+name: 'Init docker'
+on:
+  workflow_call:
+    outputs:
+      p11_kit: 
+        description: 'p11-kit runtime path'
+        value: ${{jobs.init.outputs.p11_kit}}
+      p11_kit_addr: 
+        description: 'p11-kit server unix socet address'
+        value: ${{jobs.init.outputs.p11_kit_addr}}
+      docker_img:
+        description: 'Docker image name'
+        value: ${{jobs.init.outputs.docker_img}}
+      dl_dir: 
+        description: 'Yocto Download path'
+        value: ${{jobs.init.outputs.dl_dir}}
+      sstate_dir: 
+        description: 'Yocto state cashe Download path'
+        value: ${{jobs.init.outputs.sstate_dir}}
+
+jobs:
+  init:
+    runs-on: [ self-hosted, Linux, drse ]
+    outputs:
+      p11_kit: ${{steps.export.outputs.p11_kit}}
+      p11_kit_addr: ${{steps.export.outputs.p11_kit_addr}}
+      docker_img: ${{steps.export.outputs.docker_img}}
+      dl_dir: ${{steps.export.outputs.dl_dir}}
+      sstate_dir: ${{steps.export.outputs.sstate_dir}}
+  
+    steps:
+      - name: 'Generate dynamic env variables'
+        run: |
+          echo "BUILD_USER=$(id -un)" >> $GITHUB_ENV
+          echo "BUILD_UID=$(id -u)" >> $GITHUB_ENV
+          echo "BUILD_GID=$(id -g)" >> $GITHUB_ENV
+          echo "DL_DIR=$HOME/oe/downloads" >> $GITHUB_ENV
+          echo "SSTATE_DIR=$HOME/oe/sstate-cache" >> $GITHUB_ENV
+          echo "IMG_TAG=localhost:5000/oe-kirkstone-$(id -un)" >> $GITHUB_ENV
+
+      - name: 'SSH setup and create folders'
+        run: |
+          echo "${{ secrets.SSH_BUILD_KEY }}" > ./id_github_runner
+          chmod 0600 ./id_github_runner
+          mkdir -p $HOME/.ssh
+          chmod 0700 $HOME/.ssh
+          echo "Host github.com" > $HOME/.ssh/config
+          echo " IdentityFile ${{runner.temp}}/id_github_runner" >> $HOME/.ssh/config
+          echo "${{vars.DATARESPONS_KNOWN_HOSTS}}" > $HOME/.ssh/known_hosts
+          mkdir -p $DL_DIR
+          mkdir -p $SSTATE_DIR
+        working-directory: ${{runner.temp}}
+
+      - name: 'Checkout from git'
+        uses: actions/checkout@v4
+        with:
+          submodules: true
+          ssh-key: ${{runner.temp}}/id_github_runner
+          fetch-tags: true
+
+      - name: 'setup-container'
+        env:          
+          IMG_NAME: oe-kirkstone:${{env.BUILD_USER}}
+        run: |
+          docker build . -t $IMG_NAME --build-arg USERNAME=$BUILD_USER --build-arg UID=$BUILD_UID --build-arg GID=$BUILD_GID -f ./oe-kirkstone-build.docker
+          docker tag $IMG_NAME $IMG_TAG
+          if docker ps | grep registry; then
+            echo "Container registry is running"
+          else
+            if docker ps -a | grep registry; then            
+              echo "Start container: registry"
+              docker start registry
+            else
+              echo "Create container: registry"
+              docker run -d -p 5000:5000 --name registry -v ${{runner.temp}}:/var/lib/registry registry:2
+            fi
+          fi
+          docker push $IMG_TAG
+        working-directory: ${{github.workspace}}/build-tools
+
+      - id: 'export'
+        run: |
+          echo "p11_kit=$XDG_RUNTIME_DIR/p11-kit" >> $GITHUB_OUTPUT
+          echo "p11_kit_addr=$P11_KIT_SERVER_ADDRESS" >> $GITHUB_OUTPUT
+          echo "docker_img=$IMG_TAG" >> $GITHUB_OUTPUT
+          echo "dl_dir=$DL_DIR" >> $GITHUB_OUTPUT
+          echo "sstate_dir=$SSTATE_DIR" >> $GITHUB_OUTPUT
+
