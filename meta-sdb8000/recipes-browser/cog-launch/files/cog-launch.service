@@ -7,7 +7,7 @@ After=weston-init.service network-online.target
 User=root
 PAMName=login
 Environment=WAYLAND_DISPLAY=/run/wayland-0
-Environment=COG_PLATFORM_FDO_VIEW_FULLSCREEN=1
+Environment=COG_PLATFORM_WL_VIEW_FULLSCREEN=1
 EnvironmentFile=/etc/default/cog
 ExecStartPre=/bin/sh -c 'until host $COG_URL; do sleep 1; done'
 ExecStart=cog $COG_OPTIONS $COG_URL
