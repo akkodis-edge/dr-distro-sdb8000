@@ -29,6 +29,7 @@ RDEPENDS:packagegroup-sdb8000-service = "\
 	phytool \
 	optee-test \
 	stress-ng \
+	lcd-pattern \
 "
 
 RDEPENDS:packagegroup-sdb8000-browser = "\
