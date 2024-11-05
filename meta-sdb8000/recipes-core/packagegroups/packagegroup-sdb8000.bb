@@ -25,11 +25,11 @@ RDEPENDS:packagegroup-sdb8000-service = "\
 	disk-install \
 	flash-fuse-imx8mm \
 	i2c-tools \
-	packagegroup-datarespons-test \
+	packagegroup-datarespons-test-core \
+	packagegroup-datarespons-test-graphics \
 	phytool \
 	optee-test \
 	stress-ng \
-	lcd-pattern \
 "
 
 RDEPENDS:packagegroup-sdb8000-browser = "\
