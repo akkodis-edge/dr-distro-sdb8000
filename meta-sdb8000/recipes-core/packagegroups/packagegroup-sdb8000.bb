@@ -14,7 +14,7 @@ PACKAGES = "\
 
 RDEPENDS:packagegroup-sdb8000-base = "\
 	flash-uboot \
-	swap-root \
+	image-tools \
 	backlightctl \
 	mount-data \
 "
@@ -30,6 +30,7 @@ RDEPENDS:packagegroup-sdb8000-service = "\
 	phytool \
 	optee-test \
 	stress-ng \
+	image-tools-autocommit \
 "
 
 RDEPENDS:packagegroup-sdb8000-browser = "\
