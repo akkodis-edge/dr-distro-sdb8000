@@ -22,7 +22,6 @@ RDEPENDS:packagegroup-sdb8000-base = "\
 RDEPENDS:packagegroup-sdb8000-service = "\
 	firmware-i210 \
 	flash-i210 \
-	disk-install \
 	flash-fuse-imx8mm \
 	i2c-tools \
 	packagegroup-datarespons-test-core \
