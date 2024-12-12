@@ -27,9 +27,9 @@ RDEPENDS:packagegroup-sdb8000-service = "\
 	i2c-tools \
 	packagegroup-datarespons-test-core \
 	packagegroup-datarespons-test-graphics \
+	packagegroup-datarespons-test-touch \
 	phytool \
 	optee-test \
-	stress-ng \
 	image-tools-autocommit \
 "
 
