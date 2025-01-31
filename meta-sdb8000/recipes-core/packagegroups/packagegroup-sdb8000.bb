@@ -14,6 +14,7 @@ PACKAGES = "\
 RDEPENDS:packagegroup-sdb8000-base = "\
 	flash-uboot \
 	image-tools \
+	image-tools-swap-root \
 	backlightctl \
 	mount-data \
 "
