@@ -12,7 +12,7 @@ BRANCH ?= "dr-linux-6.12.y"
 SRC_URI = "git://git@github.com/data-respons-solutions/dr-kernel-mirror.git;protocol=https;branch=${BRANCH}"
 SRC_URI += "file://defconfig"
 SRCREV ?= "5b527005644af9ac5d30fc63a3a840745770abc8"
-LINUX_VERSION_EXTENSION = "-1.5"
+LINUX_VERSION_EXTENSION = "-1.6"
 LINUX_VERSION = "6.12.10"
 
 COMPATIBLE_MACHINE = "sdb8000"
