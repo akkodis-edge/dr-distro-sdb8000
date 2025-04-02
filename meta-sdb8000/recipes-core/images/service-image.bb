@@ -6,6 +6,7 @@ FEATURE_PACKAGES_service-apps = "\
 	packagegroup-sdb8000-base \
 	packagegroup-sdb8000-browser \
 	packagegroup-sdb8000-service \
+	packagegroup-sdb8000-service-disk \
 "
 
 IMAGE_FEATURES += "service-apps"
