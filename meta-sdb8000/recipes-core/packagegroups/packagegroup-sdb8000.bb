@@ -8,6 +8,7 @@ PACKAGE_ARCH = "${MACHINE_ARCH}"
 PROVIDES = "${PACKAGES}"
 PACKAGES = "\
 	packagegroup-sdb8000-base \
+	packagegroup-sdb8000-core \
 	packagegroup-sdb8000-browser \
 "
 
@@ -16,6 +17,9 @@ RDEPENDS:packagegroup-sdb8000-base = "\
 	image-tools \
 	image-tools-swap-root \
 	backlightctl \
+"
+
+RDEPENDS:packagegroup-sdb8000-core = "\
 	mount-data \
 "
 
