@@ -31,4 +31,5 @@ RDEPENDS:packagegroup-sdb8000-service-disk = "\
 
 RDEPENDS:packagegroup-sdb8000-service-usb = "\
 	service-options-pendrive \
+	image-install-conf \
 "
