@@ -31,7 +31,7 @@ ACCEPT_FSL_EULA = "1"
 # This sets the default machine to be qemux86-64 if no other machine is selected:
 MACHINE ??= "sdb8000"
 # Default distro
-DISTRO ??= "datarespons-distro"
+DISTRO ??= "akkodis-distro"
 
 # The network based PR service host and port
 # Uncomment the following lines to enable PRservice.

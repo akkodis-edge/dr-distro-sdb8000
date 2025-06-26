@@ -10,9 +10,6 @@
 	path = meta-openembedded
 	url = git://git.openembedded.org/meta-openembedded
 	branch = scarthgap
-[submodule "meta-datarespons"]
-	path = meta-datarespons
-	url = git@github.com:data-respons-solutions/meta-datarespons.git
 [submodule "meta-bsp-common"]
 	path = meta-bsp-common
 	url = git@github.com:data-respons-solutions/meta-bsp-common.git
@@ -34,3 +31,6 @@
 	path = meta-arm
 	url = git://git.yoctoproject.org/meta-arm
 	branch = scarthgap
+[submodule "meta-akkodis"]
+	path = meta-akkodis
+	url = git@github.com:akkodis-edge/meta-akkodis.git

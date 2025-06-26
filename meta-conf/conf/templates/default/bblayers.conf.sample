@@ -11,7 +11,7 @@ BBLAYERS ?= " \
   ##OEROOT##/../meta-openembedded/meta-networking \
   ##OEROOT##/../meta-openembedded/meta-python \
   ##OEROOT##/../meta-openembedded/meta-multimedia \
-  ##OEROOT##/../meta-datarespons \
+  ##OEROOT##/../meta-akkodis \
   ##OEROOT##/../meta-bsp-common \
   ##OEROOT##/../meta-freescale \
   ##OEROOT##/../meta-sdb8000 \
