@@ -17,9 +17,9 @@ RDEPENDS:packagegroup-sdb8000-service = "\
 	flash-i210 \
 	flash-fuse-imx8mm \
 	i2c-tools \
-	packagegroup-datarespons-test-core \
-	packagegroup-datarespons-test-graphics \
-	packagegroup-datarespons-test-touch \
+	packagegroup-akkodis-test-core \
+	packagegroup-akkodis-test-graphics \
+	packagegroup-akkodis-test-touch \
 	phytool \
 	optee-test \
 	image-tools-autocommit \

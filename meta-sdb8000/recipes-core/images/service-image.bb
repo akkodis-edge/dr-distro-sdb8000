@@ -1,6 +1,6 @@
 DESCRIPTION = "Service image for eMMC boot"
 
-require recipes-core/images/datarespons-image.bb
+require recipes-core/images/akkodis-image.bb
 
 FEATURE_PACKAGES_service-apps = "\
 	packagegroup-sdb8000-base \
