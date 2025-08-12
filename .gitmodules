@@ -34,3 +34,12 @@
 [submodule "meta-akkodis"]
 	path = meta-akkodis
 	url = git@github.com:akkodis-edge/meta-akkodis.git
+[submodule "meta-kf6"]
+	path = meta-kf6
+	url = https://invent.kde.org/packaging/yocto-meta-kf6.git
+[submodule "meta-kde"]
+	path = meta-kde
+	url = https://invent.kde.org/packaging/yocto-meta-kde.git
+[submodule "meta-qt6"]
+	path = meta-qt6
+	url = https://code.qt.io/yocto/meta-qt6.git
