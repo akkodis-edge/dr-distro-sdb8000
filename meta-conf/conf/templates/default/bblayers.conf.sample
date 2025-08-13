@@ -19,7 +19,7 @@ BBLAYERS ?= " \
   ##OEROOT##/../meta-webkit \
   ##OEROOT##/../meta-arm/meta-arm \
   ##OEROOT##/../meta-arm/meta-arm-toolchain \
-  ##OEROOT##/../meta-arm/meta-qt6 \
-  ##OEROOT##/../meta-arm/meta-kf5 \
-  ##OEROOT##/../meta-arm/meta-kde \
+  ##OEROOT##/../meta-qt6 \
+  ##OEROOT##/../meta-kf6 \
+  ##OEROOT##/../meta-kde \
   "
