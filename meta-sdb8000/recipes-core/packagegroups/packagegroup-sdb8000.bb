@@ -26,4 +26,5 @@ RDEPENDS:packagegroup-sdb8000-core = "\
 RDEPENDS:packagegroup-sdb8000-browser = "\
 	cog \
 	cog-launch \
+	maliit-keyboard-qt6 \
 "
