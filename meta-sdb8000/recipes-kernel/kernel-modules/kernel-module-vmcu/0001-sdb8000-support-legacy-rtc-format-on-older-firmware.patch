@@ -4,6 +4,7 @@ Date: Thu, 15 Aug 2024 11:16:51 +0200
 Subject: [PATCH] sdb8000: support legacy rtc format on older firmware
 
 ---
+Upstream-Status: Pending
  vmcu.c | 87 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++-
  1 file changed, 86 insertions(+), 1 deletion(-)
 
