@@ -8,14 +8,16 @@ SRC_URI += " \
 	file://cog-launch.service \
 	file://cog-default \
 "
+S = "${WORKDIR}/sources"
+UNPACKDIR = "${S}"
 
 RDEPENDS:${PN} += "cog"
 
 do_install () {
     install -d ${D}${systemd_system_unitdir}
-    install -m 0644 ${WORKDIR}/cog-launch.service ${D}${systemd_system_unitdir}/cog-launch.service
+    install -m 0644 ${S}/cog-launch.service ${D}${systemd_system_unitdir}/cog-launch.service
     install -d ${D}/${sysconfdir}/default
-    install -m 0644 ${WORKDIR}/cog-default ${D}/${sysconfdir}/default/cog
+    install -m 0644 ${S}/cog-default ${D}/${sysconfdir}/default/cog
 }
 
 SYSTEMD_SERVICE:${PN} += "cog-launch.service"
