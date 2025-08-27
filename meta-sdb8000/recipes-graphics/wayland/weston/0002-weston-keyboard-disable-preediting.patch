@@ -1,0 +1,63 @@
+From 87404caa16e3251f09a9a9ab6d27392307512c4d Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Mikko=20Salom=C3=A4ki?= <ms@akkodis.se>
+Date: Wed, 27 Aug 2025 09:32:03 +0200
+Subject: [PATCH] weston-keyboard disable preediting
+
+Operating multiple input fields in cog (webkit) has compatibility issues when used with
+weston-keyboard (on-screen keyboard). This is a known bug: https://github.com/Igalia/cog/issues/413
+
+The issue seems to be a discrepancy in how webkit and weston-keyboard expect preedit text
+to be operated. The preedit is used for input with multiple-keys for a single character, such
+as placing a tilde above a letter or non-latin languages such as Japanese.
+weston-keyboard however sends all input as a long preedit string until a whitespace character
+(space, newline, tab) is pressed.
+
+When changing input field or cursor position within the current input field webkit calls
+the callback method:
+webkit_input_method_context_notify_cursor_area(WebKitInputMethodContext *context, int x, int y, int width, int height)
+There is no way (?) to distinguish cursor position changes from input field changes in the wayland
+implementation in cog: platform/wayland/cog-im-context-wl-v1.c
+The cursor position change is not included in notification protocol to the weston-keyboard
+as it seems managed by the compositor.
+
+This patch will change the behaviour of weston-keyboard to instead of updating text being preedited
+by zwp_input_method_context_v1_preedit_string() to instead commit finished strings by
+zwp_input_method_context_v1_commit_string().
+
+Upstream-Status: Pending
+
+---
+ clients/keyboard.c | 17 ++---------------
+ 1 file changed, 2 insertions(+), 15 deletions(-)
+
+diff --git a/clients/keyboard.c b/clients/keyboard.c
+index 49b94ba..20effd8 100644
+--- a/clients/keyboard.c
++++ b/clients/keyboard.c
+@@ -459,21 +459,8 @@ static void
+ virtual_keyboard_send_preedit(struct virtual_keyboard *keyboard,
+ 			      int32_t cursor)
+ {
+-	uint32_t index = strlen(keyboard->preedit_string);
+-
+-	if (keyboard->preedit_style)
+-		zwp_input_method_context_v1_preedit_styling(keyboard->context,
+-							    0,
+-							    strlen(keyboard->preedit_string),
+-							    keyboard->preedit_style);
+-	if (cursor > 0)
+-		index = cursor;
+-	zwp_input_method_context_v1_preedit_cursor(keyboard->context,
+-						   index);
+-	zwp_input_method_context_v1_preedit_string(keyboard->context,
+-						   keyboard->serial,
+-						   keyboard->preedit_string,
+-						   keyboard->preedit_string);
++	(void) cursor;
++	virtual_keyboard_commit_preedit(keyboard);
+ }
+ 
+ static const char *
+-- 
+2.39.5
+

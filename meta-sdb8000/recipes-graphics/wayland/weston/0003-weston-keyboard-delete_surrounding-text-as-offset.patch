@@ -1,0 +1,74 @@
+From a60311a3f3bd13e3808b9937788355d735766b9d Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Mikko=20Salom=C3=A4ki?= <ms@akkodis.se>
+Date: Wed, 27 Aug 2025 10:58:38 +0200
+Subject: [PATCH] weston-keyboard: delete_surrounding text as offset
+
+zwp_input_method_context_v1_delete_surrounding_text() takes an offset to
+current cursor as input but an absolute cursor position was provided.
+Fix to always delete single character.
+
+Upstream-Status: Pending
+
+---
+ clients/keyboard.c | 30 ++++--------------------------
+ 1 file changed, 4 insertions(+), 26 deletions(-)
+
+diff --git a/clients/keyboard.c b/clients/keyboard.c
+index 20effd8..b4490ad 100644
+--- a/clients/keyboard.c
++++ b/clients/keyboard.c
+@@ -463,47 +463,25 @@ virtual_keyboard_send_preedit(struct virtual_keyboard *keyboard,
+ 	virtual_keyboard_commit_preedit(keyboard);
+ }
+ 
+-static const char *
+-prev_utf8_char(const char *s, const char *p)
+-{
+-	for (--p; p >= s; --p) {
+-		if ((*p & 0xc0) != 0x80)
+-			return p;
+-	}
+-	return NULL;
+-}
+-
+ static void
+ delete_before_cursor(struct virtual_keyboard *keyboard)
+ {
+-	const char *start, *end;
+-
+ 	if (!keyboard->surrounding_text) {
+ 		dbg("delete_before_cursor: No surrounding text available\n");
+ 		return;
+ 	}
+ 
+-	start = prev_utf8_char(keyboard->surrounding_text,
+-			       keyboard->surrounding_text + keyboard->surrounding_cursor);
+-	if (!start) {
+-		dbg("delete_before_cursor: No previous character to delete\n");
+-		return;
+-	}
+-
+-	end = keyboard->surrounding_text + keyboard->surrounding_cursor;
+-
++	/* Remove single char */
+ 	zwp_input_method_context_v1_delete_surrounding_text(keyboard->context,
+-							    start - keyboard->surrounding_text,
+-							    end - start);
++							    -1,
++							    1);
+ 	zwp_input_method_context_v1_commit_string(keyboard->context,
+ 						  keyboard->serial,
+ 						  "");
+ 
+ 	/* Update surrounding text */
+-	keyboard->surrounding_cursor = start - keyboard->surrounding_text;
+ 	keyboard->surrounding_text[keyboard->surrounding_cursor] = '\0';
+-	if (*end)
+-		memmove(keyboard->surrounding_text + keyboard->surrounding_cursor, end, strlen(end));
++	keyboard->surrounding_cursor--;
+ }
+ 
+ static char *
+-- 
+2.39.5
+
