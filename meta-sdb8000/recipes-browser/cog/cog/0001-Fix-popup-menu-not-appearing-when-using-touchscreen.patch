@@ -1,0 +1,26 @@
+From adbd42052e69efd3bd8a0aff6e166e1f9ebfb746 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Mikko=20Salom=C3=A4ki?= <ms@akkodis.se>
+Date: Wed, 10 Sep 2025 14:52:52 +0200
+Subject: [PATCH] Fix popup menu not appearing when using touchscreen
+
+Issue described here: https://github.com/Igalia/cog/issues/503
+---
+ platform/wayland/cog-platform-wl.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/platform/wayland/cog-platform-wl.c b/platform/wayland/cog-platform-wl.c
+index c81028c..24b99ac 100644
+--- a/platform/wayland/cog-platform-wl.c
++++ b/platform/wayland/cog-platform-wl.c
+@@ -2346,7 +2346,7 @@ create_popup (WebKitOptionMenu *option_menu)
+         xdg_popup_add_listener (popup_data.xdg_popup,
+                                 &xdg_popup_listener,
+                                 NULL);
+-        xdg_popup_grab (popup_data.xdg_popup, wl_data.seat, wl_data.event_serial);
++        //xdg_popup_grab (popup_data.xdg_popup, wl_data.seat, wl_data.event_serial);
+         wl_surface_commit (popup_data.wl_surface);
+     } else if (wl_data.shell != NULL) {
+         popup_data.shell_surface = wl_shell_get_shell_surface (wl_data.shell,
+-- 
+2.39.5
+
