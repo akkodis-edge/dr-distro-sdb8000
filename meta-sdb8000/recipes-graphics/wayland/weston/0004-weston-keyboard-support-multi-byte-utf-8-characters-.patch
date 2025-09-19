@@ -1,0 +1,72 @@
+From 8ce2e7f96fffa3c2f7c5b6624147cfce23149548 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Mikko=20Salom=C3=A4ki?= <ms@akkodis.se>
+Date: Wed, 17 Sep 2025 11:35:03 +0200
+Subject: [PATCH] weston-keyboard: support multi-byte utf-8 characters in
+ delete_surrounding
+
+Upstream-Status: Pending
+
+---
+ clients/keyboard.c | 41 +++++++++++++++++++++++++++++++++++++----
+ 1 file changed, 37 insertions(+), 4 deletions(-)
+
+diff --git a/clients/keyboard.c b/clients/keyboard.c
+index b4490ad..7a4fe90 100644
+--- a/clients/keyboard.c
++++ b/clients/keyboard.c
+@@ -466,15 +466,48 @@ virtual_keyboard_send_preedit(struct virtual_keyboard *keyboard,
+ static void
+ delete_before_cursor(struct virtual_keyboard *keyboard)
+ {
+-	if (!keyboard->surrounding_text) {
++	if (!keyboard->surrounding_text  || keyboard->surrounding_cursor < 1) {
+ 		dbg("delete_before_cursor: No surrounding text available\n");
+ 		return;
+ 	}
+ 
+-	/* Remove single char */
++	uint32_t utf8_bytes = 0;
++	uint32_t pos = keyboard->surrounding_cursor -1;
++	if ((keyboard->surrounding_text[pos] & 0x80) == 0) {
++		/* single byte */
++		utf8_bytes = 1;
++	}
++	else {
++		while (1) {
++			utf8_bytes++;
++			if ((keyboard->surrounding_text[pos] & 0xc0) == 0x80) { /* Found continuation byte */
++				/* do nothing */
++			}
++			else if ((keyboard->surrounding_text[pos] & 0xc0) == 0xc0) { /* Found first byte */
++				break;
++			}
++			else { /* invalid */
++				/* Fallback to 1 byte */
++				utf8_bytes = 1;
++				break;
++			}
++
++			if (pos == 0) {
++				/* Could not determine length, fallback to 1 byte */
++				utf8_bytes = 1;
++				break;
++			}
++			pos--;
++		}
++	}
++	/* UTF-8 is max 4 bytes, reset to 1 if invalid */
++	if (utf8_bytes > 4 || utf8_bytes == 0)
++		utf8_bytes = 1;
++
++	/* Remove char */
+ 	zwp_input_method_context_v1_delete_surrounding_text(keyboard->context,
+-							    -1,
+-							    1);
++							    -utf8_bytes,
++								utf8_bytes);
+ 	zwp_input_method_context_v1_commit_string(keyboard->context,
+ 						  keyboard->serial,
+ 						  "");
+-- 
+2.39.5
+
