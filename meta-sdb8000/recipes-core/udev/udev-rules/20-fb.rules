@@ -1,0 +1,2 @@
+# Add /dev/fb0 for psplash-start.service
+ACTION=="add", SUBSYSTEM=="graphics", KERNEL=="fb0", TAG+="systemd"
