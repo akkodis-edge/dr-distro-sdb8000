@@ -17,6 +17,10 @@ RDEPENDS:packagegroup-sdb8000-base = "\
 	image-tools \
 	image-tools-swap-root \
 	backlightctl \
+	avahi-daemon \
+	avahi-utils \
+	psplash \
+	libnss-mdns \
 "
 
 RDEPENDS:packagegroup-sdb8000-core = "\
